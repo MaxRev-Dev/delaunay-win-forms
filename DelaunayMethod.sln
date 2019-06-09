@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelaunayMethod", "DelaunayMethod\DelaunayMethod.csproj", "{AEA298E1-BDDC-4AE7-9834-52416C7B4F75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEA298E1-BDDC-4AE7-9834-52416C7B4F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEA298E1-BDDC-4AE7-9834-52416C7B4F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEA298E1-BDDC-4AE7-9834-52416C7B4F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEA298E1-BDDC-4AE7-9834-52416C7B4F75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {686AD9A4-EF94-43BC-9410-ECD85A56EAA0}
+	EndGlobalSection
+EndGlobal
