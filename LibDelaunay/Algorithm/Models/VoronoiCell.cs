@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DelaunayMethod.Algorithm.Interfaces;
+using LibDelaunay.Algorithm.Interfaces;
 
-namespace DelaunayMethod.Algorithm.Models
+namespace LibDelaunay.Algorithm.Models
 {
     public struct VoronoiCell : IVoronoiCell
     {

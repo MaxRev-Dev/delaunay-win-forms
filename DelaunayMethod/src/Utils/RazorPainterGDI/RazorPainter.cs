@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace DelaunayMethod.Utils.RazorPainterGDI
+namespace LibDelaunay.Utils.RazorPainterGDI
 {
     public class RazorPainter : IDisposable
     {
@@ -82,6 +82,7 @@ namespace DelaunayMethod.Utils.RazorPainterGDI
             };
         }
 
+        /// <exception cref="T:System.Exception">The operation failed.</exception>
         public void Paint(HandleRef hRef, Bitmap bitmap)
         {
             if (bitmap == null || bitmap.Width == 0 || bitmap.Height == 0)

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DelaunayMethod.Algorithm.Interfaces;
-using DelaunayMethod.Algorithm.Models;
+using LibDelaunay.Algorithm.Interfaces;
+using LibDelaunay.Algorithm.Models;
 
-namespace DelaunayMethod.Algorithm
+namespace LibDelaunay.Algorithm
 {
     public class DelaunayEngine : IDisposable
     {
@@ -41,12 +42,14 @@ namespace DelaunayMethod.Algorithm
         private readonly double _cy;
         private int n;
 
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidDataException"></exception>
         public DelaunayEngine(IEnumerable<IPoint> points)
         {
             var list = points as IPoint[] ?? points.ToArray();
             if (list.Length < 2)
             {
-                throw new Exception("Need at least 3 points");
+                throw new ArgumentOutOfRangeException("Need at least 3 points");
             }
 
             _rawInternal = list;
@@ -75,7 +78,7 @@ namespace DelaunayMethod.Algorithm
 
             if (double.IsPositiveInfinity(minRadius))
             {
-                throw new Exception("No Delaunay triangulation exists for this input.");
+                throw new InvalidDataException("No Delaunay triangulation exists for this input.");
             }
 
             if (Orient(i0x, i0y, i1x, i1y, i2x, i2y))

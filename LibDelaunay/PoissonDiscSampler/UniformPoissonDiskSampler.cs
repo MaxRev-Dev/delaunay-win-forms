@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace DelaunayMethod.PoissonDiscSampler
+namespace LibDelaunay.PoissonDiscSampler
 {
     // Adapated from java source by Herman Tulleken
     // http://www.luma.co.za/labs/2008/02/27/poisson-disk-sampling/

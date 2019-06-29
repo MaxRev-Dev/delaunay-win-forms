@@ -87,8 +87,8 @@
             // 
             // layer
             // 
-            this.layer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.layer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.layer.Location = new System.Drawing.Point(12, 42);
@@ -100,11 +100,11 @@
             this.layer.Paint += new System.Windows.Forms.PaintEventHandler(this.Layer_Paint);
             this.layer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Layer_MouseDown);
             this.layer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Layer_MouseMove);
-            this.layer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Layer_MouseUp); 
+            this.layer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Layer_MouseUp);
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.importBtn);
@@ -152,8 +152,8 @@
             // 
             // exportBtn
             // 
-            this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exportBtn.Location = new System.Drawing.Point(232, 7);
             this.exportBtn.Name = "exportBtn";
@@ -322,7 +322,7 @@
             // 
             // panel5
             // 
-            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel5.Controls.Add(this.mposition);
             this.panel5.Controls.Add(this.status);

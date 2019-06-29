@@ -12,13 +12,11 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DelaunayMethod.Algorithm;
-using DelaunayMethod.Algorithm.Interfaces;
-using DelaunayMethod.PoissonDiscSampler;
 using DelaunayMethod.Utils;
-using DelaunayMethod.Utils.RazorPainterGDI;
-using Point = DelaunayMethod.Algorithm.Models.Point;
-using Timer = System.Threading.Timer;
+using LibDelaunay.Algorithm;
+using LibDelaunay.Algorithm.Interfaces;
+using LibDelaunay.PoissonDiscSampler;
+using LibDelaunay.Utils.RazorPainterGDI;
 
 namespace DelaunayMethod
 {
@@ -121,7 +119,7 @@ namespace DelaunayMethod
             _selectedFillSpeed = FillSpeed.Fast;
             speedBox.DataSource = Enum.GetNames(typeof(FillSpeed));
             speedBox.SelectedIndex = 0;
-            _oldPoint = new Point(layer.Width, layer.Height);
+            _oldPoint = new LibDelaunay.Algorithm.Models.Point(layer.Width, layer.Height);
 
             InitializeColorSite();
         }
@@ -231,9 +229,9 @@ namespace DelaunayMethod
 
             if (d < 0 || d > 200) d = 3;
             return UniformPoissonDiskSampler.SampleRectangle(
-                    new Vector2(g.Top + _padding, g.Left + _padding),
-                    new Vector2(g.Right - _padding, g.Bottom - _padding),
-                    d).Select(x => new Point(x.X, x.Y)).Cast<IPoint>()
+                new Vector2(g.Top + _padding, g.Left + _padding),
+                new Vector2(g.Right - _padding, g.Bottom - _padding),
+                d).Select(x => new LibDelaunay. Algorithm.Models.Point(x.X, x.Y)).Cast<IPoint>()
                 .Concat(GetUserPoints());
         }
 
@@ -263,7 +261,7 @@ namespace DelaunayMethod
             try
             {
                 _delaunayEngine?.Dispose();
-                _delaunayEngine = new DelaunayEngine(mainEnu.Select(x => (IPoint)new Point(x.X, x.Y)));
+                _delaunayEngine = new DelaunayEngine(mainEnu.Select(x => (IPoint)new LibDelaunay.Algorithm.Models.Point(x.X, x.Y)));
             }
             catch
             {
@@ -271,7 +269,7 @@ namespace DelaunayMethod
             }
         }
 
-        private async Task GenerateAndDrawPoints(Graphics context)
+        private async Task GenerateAndDrawPointsAsync(Graphics context)
         {
             ClearGraphics(context);
             DrawTokenCleanUp();
@@ -287,10 +285,10 @@ namespace DelaunayMethod
                 _pointsHeap = GeneratePoints(bounds).ToList();
                 RefreshEngine(bounds);
             }
-            await RegisterAndExecuteAsync(DrawPoints, context);
+            await RegisterAndExecuteAsync(DrawPointsAsync, context);
         }
 
-        private async Task DrawVoironoiCells(Graphics context)
+        private async Task DrawVoironoiCellsAsync(Graphics context)
         {
             var bounds = GetBoundsLocked(context);
             RefreshEngine(bounds);
@@ -331,14 +329,14 @@ namespace DelaunayMethod
                                 iter();
                             }
                     });
-                }, token);
+                }, token).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
             }
         }
 
-        private async Task DrawHull(Graphics context)
+        private async Task DrawHullAsync(Graphics context)
         {
             var bounds = GetBoundsLocked(context);
 
@@ -371,12 +369,12 @@ namespace DelaunayMethod
                                 iter();
                             }
                     });
-                }, token);
+                }, token).ConfigureAwait(false);
             }
             catch (TaskCanceledException) { }
         }
 
-        private Task DrawDelaunayCells(Graphics context)
+        private Task DrawDelaunayCellsAsync(Graphics context)
         {
             var bounds = GetBoundsLocked(context);
             if (!_refreshContext)
@@ -419,7 +417,7 @@ namespace DelaunayMethod
 
         }
 
-        private async Task DrawPoints(Graphics context)
+        private async Task DrawPointsAsync(Graphics context)
         {
             try
             {
@@ -438,12 +436,12 @@ namespace DelaunayMethod
                                 iter();
                             }
                     });
-                }, token);
+                }, token).ConfigureAwait(false);
             }
             catch (TaskCanceledException) { }
         }
 
-        private async Task ProcessImport(Graphics context)
+        private async Task ProcessImportAsync(Graphics context)
         {
             try
             {
@@ -462,11 +460,11 @@ namespace DelaunayMethod
                 }
                 _pointsHeap = await _importCache
                     .Select(x => GeoImporter.ProjectLatLonToXY(x, xR, yR))
-                    .ToListAsync(token);
+                    .ToListAsync(token).ConfigureAwait(false);
                 _delaunayEngine?.Dispose();
                 _delaunayEngine = new DelaunayEngine(GetAllPoints());
                 _refreshContext = false;
-                await DrawPoints(context);
+                await DrawPointsAsync(context).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -525,7 +523,7 @@ namespace DelaunayMethod
                                            var tmpImm = _immediate;
                                            _immediate = true;
 
-                                           await _registry.ExecuteAll(g, token);
+                                           await _registry.ExecuteAllAsync(g, token).ConfigureAwait(false);
                                            _pointsHeap = pback;
                                            _immediate = tmpImm;
                                            _refreshContext = false;
@@ -542,7 +540,7 @@ namespace DelaunayMethod
                                            status.Text = @"Exported successfully");
                                    }
                                }
-                               catch
+                               catch (Exception)
                                {
                                    TryInvoke(() =>
                                        status.Text = @"Failed to export");
@@ -610,14 +608,14 @@ namespace DelaunayMethod
         {
             var xNew = cn.Width;
             var yNew = cn.Height;
-            return new Point(Math.Min(point.X / x * xNew, xNew), Math.Min(point.Y / y * yNew, yNew));
+            return new LibDelaunay.Algorithm.Models.Point(Math.Min(point.X / x * xNew, xNew), Math.Min(point.Y / y * yNew, yNew));
         }
 
         private Task RegisterAndExecuteAsync(GrTF v, Graphics context, bool prepend = false)
         {
             Register(v, prepend);
             var token = _drawInlineCancellationToken;
-            _ = Task.Factory.StartNew(async () => await v(context), token);
+            _ = Task.Factory.StartNew(() => v(context), token);
             return Task.CompletedTask;
         }
 
@@ -693,7 +691,7 @@ namespace DelaunayMethod
             resolutionCB.SelectedIndex = 0;
         }
 
-        private Task DrawPoint(Graphics context, Color color, IPoint point)
+        private Task DrawPointAsync(Graphics context, Color color, IPoint point)
         {
             GraphicsLocked(context, g =>
             {
@@ -745,7 +743,7 @@ namespace DelaunayMethod
 
                        lock (paintLock)
                        {
-                           _oldPoint = new Point(bounds.X, bounds.Y);
+                           _oldPoint = new LibDelaunay.Algorithm.Models.Point(bounds.X, bounds.Y);
                        }
 
                        Application.DoEvents();
@@ -772,7 +770,7 @@ namespace DelaunayMethod
             {
                 case Keys.G:
                     {
-                        task = GenerateAndDrawPoints;
+                        task = GenerateAndDrawPointsAsync;
                         break;
                     }
                 case Keys.C:
@@ -788,18 +786,18 @@ namespace DelaunayMethod
 
                 case Keys.D:
                     {
-                        task = DrawDelaunayCells;
+                        task = DrawDelaunayCellsAsync;
                         break;
                     }
 
                 case Keys.V:
                     {
-                        task = DrawVoironoiCells;
+                        task = DrawVoironoiCellsAsync;
                         break;
                     }
                 case Keys.H:
                     {
-                        task = DrawHull;
+                        task = DrawHullAsync;
                         break;
                     }
                 default:
@@ -813,7 +811,7 @@ namespace DelaunayMethod
             {
                 _registry.Add(task);
                 var token = _drawInlineCancellationToken;
-                _ = Task.Factory.StartNew(async () => await task(context), token);
+                _ = Task.Factory.StartNew(() => task(context), token);
             }
         }
 
@@ -824,12 +822,12 @@ namespace DelaunayMethod
 
         private void GeneratePointsBtn_Click(object sender, EventArgs e)
         {
-            _ = RegisterAndExecuteAsync(GenerateAndDrawPoints, graphics);
+            _ = RegisterAndExecuteAsync(GenerateAndDrawPointsAsync, graphics);
         }
 
         private void FillDelaunayBtn_Click(object sender, EventArgs e)
         {
-            _ = RegisterAndExecuteAsync(DrawDelaunayCells, graphics);
+            _ = RegisterAndExecuteAsync(DrawDelaunayCellsAsync, graphics);
         }
 
         private void Layer_Click(object sender, EventArgs e)
@@ -853,7 +851,7 @@ namespace DelaunayMethod
             {
                 ClearGraphics(graphics);
                 importFileName = fd.FileName;
-                _ = RegisterAndExecuteAsync(ProcessImport, graphics);
+                _ = RegisterAndExecuteAsync(ProcessImportAsync, graphics);
             }
         }
 
@@ -874,8 +872,8 @@ namespace DelaunayMethod
                 });
             try
             {
-                await Task.Factory.StartNew(async () =>
-                    await _registry.ExecuteAll(graphics, token), token);
+                await Task.Factory.StartNew(() =>
+                    _registry.ExecuteAllAsync(graphics, token), token).ConfigureAwait(false);
             }
             catch (TaskCanceledException) { }
 
@@ -923,7 +921,7 @@ namespace DelaunayMethod
                     }
 
 
-                    var p = new Point(x, y);
+                    var p = new LibDelaunay.Algorithm.Models.Point(x, y);
                     _dragDelayerRelay.Start();
                     _dragDelayerRelay.Interval = 300;
                     _dragDelayerRelay.Tick += (e0, e1) =>
@@ -955,7 +953,7 @@ namespace DelaunayMethod
                         try
                         {
                             RegisterAndExecuteAsync(g =>
-                                        DrawPoint(g, _colorMap[ColorSite.Points], new Point(x, y)),
+                                        DrawPointAsync(g, _colorMap[ColorSite.Points], new LibDelaunay.Algorithm.Models.Point(x, y)),
                                     graphics, true)
                                 .Wait(token);
                             layer.Invalidate(); /*new Rectangle(new System.Drawing.Point((int) p.X, (int) p.Y), new Size(9,9))*/
@@ -1009,8 +1007,8 @@ namespace DelaunayMethod
         private void VoronoiFillBtn_Click(object sender, EventArgs e)
         {
             var token = _drawInlineCancellationToken;
-            Task.Factory.StartNew(async () =>
-                await RegisterAndExecuteAsync(DrawVoironoiCells, graphics), token);
+            Task.Factory.StartNew(() =>
+                RegisterAndExecuteAsync(DrawVoironoiCellsAsync, graphics), token);
         }
 
         private void SpeedBox_SelectedIndexChanged(object sender, EventArgs e)

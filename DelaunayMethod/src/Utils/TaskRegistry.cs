@@ -11,7 +11,10 @@ namespace DelaunayMethod.Utils
     {
         private readonly LinkedList<Func<T, Task>> _list = new LinkedList<Func<T, Task>>();
         readonly object exGate = new object();
-        public Task ExecuteAll(T context, CancellationToken token = default)
+
+        /// <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
+        /// <exception cref="T:System.MemberAccessException">The caller does not have access to the method represented by the delegate (for example, if the method is private).</exception>
+        public Task ExecuteAllAsync(T context, CancellationToken token = default)
         {
             PreAction?.Invoke();
             lock (exGate)
@@ -97,6 +100,7 @@ namespace DelaunayMethod.Utils
 
     internal static class TaskExtensions
     {
+        /// <exception cref="T:System.Threading.Tasks.TaskCanceledException">Condition.</exception>
         public static Task<List<T>> ToListAsync<T>(this IEnumerable<T> list, CancellationToken token = default)
         {
             IEnumerable<T> enu()

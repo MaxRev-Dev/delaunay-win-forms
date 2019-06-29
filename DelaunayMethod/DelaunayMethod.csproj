@@ -91,15 +91,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Algorithm\DelaunayMethod.cs" />
-    <Compile Include="src\Algorithm\Interfaces\IEdge.cs" />
-    <Compile Include="src\Algorithm\Interfaces\IPoint.cs" />
-    <Compile Include="src\Algorithm\Interfaces\ITriangle.cs" />
-    <Compile Include="src\Algorithm\Interfaces\IVoronoiCell.cs" />
-    <Compile Include="src\Algorithm\Models\Point.cs" />
-    <Compile Include="src\Algorithm\Models\Triangle.cs" />
-    <Compile Include="src\Algorithm\Models\VoronoiCell.cs" />
-    <Compile Include="src\Algorithm\Models\Edge.cs" />
     <Compile Include="src\Utils\GeoImporter.cs" />
     <Compile Include="src\Utils\ImageResolutionConverter.cs" />
     <Compile Include="src\Main.cs">
@@ -108,7 +99,6 @@
     <Compile Include="src\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\PoissonDiscSampler\UniformPoissonDiskSampler.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Utils\RazorPainterGDI\RazorPainter.cs" />
@@ -154,6 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibDelaunay\LibDelaunay.csproj">
+      <Project>{EF8F4008-EC7D-4E27-B697-3FC132711270}</Project>
+      <Name>LibDelaunay</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

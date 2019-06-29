@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DelaunayMethod.Algorithm.Interfaces;
-using DelaunayMethod.Algorithm.Models;
+using LibDelaunay.Algorithm.Interfaces;
+using LibDelaunay.Algorithm.Models;
 
 namespace DelaunayMethod.Utils
 {
@@ -24,6 +24,12 @@ namespace DelaunayMethod.Utils
     }
     public class GeoImporter
     {
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+        /// <exception cref="T:System.OutOfMemoryException">There is insufficient memory to allocate a buffer for the returned string.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The specified path is invalid, (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.FileNotFoundException">The file specified in <paramref name="fileNameCsv" /> was not found.</exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.OverflowException"></exception>
         public static IEnumerable<GeoPoint> ImportCsv(string fileNameCsv)
         {
             if (!File.Exists(fileNameCsv))

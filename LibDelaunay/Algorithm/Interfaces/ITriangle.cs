@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DelaunayMethod.Algorithm.Interfaces
+namespace LibDelaunay.Algorithm.Interfaces
 {
-    public interface IVoronoiCell
+    public interface ITriangle
     {
         IEnumerable<IPoint> Points { get; }
         int Index { get; }
